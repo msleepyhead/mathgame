@@ -1,20 +1,13 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Math Practice for Kids</title>
-
-    <!-- ADDED: Link to the manifest file -->
     <link rel="manifest" href="manifest.json" />
-
-    <!-- ADDED: Theme color for the browser's address bar on mobile -->
     <meta name="theme-color" content="#121212"/>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <style>
-        /* MODIFICATION: Reverted to black & white theme */
         :root {
             --bg: #f5f5f5;
             --fg: #121212;
@@ -51,14 +44,8 @@
             }
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-        }
-
+        * { box-sizing: border-box; }
+        html { font-size: 16px; }
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -73,110 +60,33 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-        }
+        .container { width: 100%; max-width: 480px; }
+        .card { background: var(--card-bg); border-radius: 1rem; box-shadow: var(--shadow); padding: 1.5rem; animation: fadeIn 0.5s ease-out; margin-bottom: 1.5rem; border: 1px solid var(--border); transition: background 0.3s, border 0.3s; }
+        h1 { text-align: center; font-size: 1.8rem; color: var(--accent); margin: 0 0 1.5rem; }
+        .lesson-selection { text-align: center; margin-bottom: 1.5rem; }
+        .lesson-selection h2 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--muted); }
+        .lesson-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+        .lesson-btn { background: var(--lesson-btn-bg); color: var(--lesson-btn-fg); border: 2px solid var(--lesson-btn-bg); font-weight: 600; padding: 0.5rem 0.8rem; border-radius: 0.5rem; cursor: pointer; font-size: 1.2rem; min-width: 44px; transition: all 0.2s; }
+        .lesson-btn:hover { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+        .lesson-btn.active { background: var(--lesson-btn-active-bg); color: var(--lesson-btn-active-fg); border-color: var(--lesson-btn-active-bg); }
+        #questionBox { min-height: 150px; border-radius: 0.75rem; background: var(--bg); display: flex; justify-content: center; align-items: center; padding: 1.5rem; margin-bottom: 1.5rem; }
+        #question { font-family: "Courier New", Courier, monospace; font-size: 2.5rem; font-weight: bold; text-align: right; line-height: 1.2; width: 100%; }
+        #question .operator { position: absolute; left: -0.8em; }
+        #question .bottom-number { position: relative; border-bottom: 4px solid var(--fg); padding-bottom: 0.2em; }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            animation: fadeIn 0.5s ease-out;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border);
-            transition: background 0.3s, border 0.3s;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin: 0 0 1.5rem;
-        }
-
-        .lesson-selection {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .lesson-selection h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--muted);
-        }
-
-        .lesson-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .lesson-btn {
-            background: var(--lesson-btn-bg);
-            color: var(--lesson-btn-fg);
-            border: 2px solid var(--lesson-btn-bg);
-            font-weight: 600;
-            padding: 0.5rem 0.8rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 1.2rem;
-            min-width: 44px;
-            transition: all 0.2s;
-        }
-
-        .lesson-btn:hover {
-            background: var(--accent);
-            color: var(--accent-fg);
-            border-color: var(--accent);
-        }
-
-        .lesson-btn.active {
-            background: var(--lesson-btn-active-bg);
-            color: var(--lesson-btn-active-fg);
-            border-color: var(--lesson-btn-active-bg);
-        }
-
-        #questionBox {
-            min-height: 150px;
-            border-radius: 0.75rem;
-            background: var(--bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        #question {
-            font-family: "Courier New", Courier, monospace;
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-align: right;
-            line-height: 1.2;
-            width: 100%;
-        }
-
-        #question .operator {
-            position: absolute;
-            left: -0.8em;
-        }
-
-        #question .bottom-number {
-            position: relative;
-            border-bottom: 4px solid var(--fg);
-            padding-bottom: 0.2em;
-        }
-
+        /* --- UI FIX: Mobile-First Controls --- */
         .controls {
             display: flex;
+            flex-direction: column; /* Default to vertical stacking */
             gap: 0.75rem;
+        }
+        
+        input[type="number"],
+        .controls .btn {
+            width: 100%; /* Make both elements full-width on mobile */
         }
 
         input[type="number"] {
-            flex: 1;
             padding: 0.8rem 1rem;
             border-radius: 0.5rem;
             border: 2px solid var(--border);
@@ -188,12 +98,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input[type="number"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--bg);
-            outline: none;
-        }
-
+        input[type="number"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--bg); outline: none; }
         button.btn {
             background: var(--accent);
             color: var(--accent-fg);
@@ -206,69 +111,27 @@
             transition: opacity 0.2s, transform 0.1s;
         }
 
-        button.btn:active {
-            transform: scale(0.98);
-        }
+        button.btn:active { transform: scale(0.98); }
+        button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .feedback { margin-top: 1.25rem; text-align: center; min-height: 2.5rem; font-weight: bold; font-size: 1.2rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; }
+        .stats { text-align: center; margin-top: 1.5rem; font-size: 1rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 1rem; }
+        .stats span { display: block; font-weight: 600; font-size: 1.4rem; color: var(--fg); }
+        .animation-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.4); z-index: 1000; }
+        .animation-overlay > div { width: 250px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        button.btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .feedback {
-            margin-top: 1.25rem;
-            text-align: center;
-            min-height: 2.5rem;
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .stats {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 1rem;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-        }
-
-        .stats span {
-            display: block;
-            font-weight: 600;
-            font-size: 1.4rem;
-            color: var(--fg);
-        }
-
-        .animation-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-        }
-
-        .animation-overlay>div {
-            width: 250px;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
+        /* --- UI FIX: Media query for larger screens --- */
+        @media (min-width: 420px) {
+            .controls {
+                flex-direction: row; /* Switch back to horizontal layout */
             }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            input[type="number"] {
+                flex: 1; /* Allow input to grow */
+                width: auto; /* Reset width to be flexible */
+            }
+            .controls .btn {
+                width: auto; /* Allow button to have its natural width */
             }
         }
     </style>
@@ -289,9 +152,7 @@
 
         <div class="card">
             <h1 id="lesson-title">Lesson 1: Addition</h1>
-            <div id="questionBox">
-                <div id="question"></div>
-            </div>
+            <div id="questionBox"><div id="question"></div></div>
             <div class="controls">
                 <input id="answer" type="number" placeholder="Answer" autocomplete="off" />
                 <button id="check" class="btn">Check</button>
@@ -303,15 +164,12 @@
             </div>
         </div>
     </div>
-
-    <div id="success-animation-container" class="animation-overlay">
-        <div id="success-lottie"></div>
-    </div>
-    <div id="error-animation-container" class="animation-overlay">
-        <div id="error-lottie"></div>
-    </div>
+    
+    <div id="success-animation-container" class="animation-overlay"><div id="success-lottie"></div></div>
+    <div id="error-animation-container" class="animation-overlay"><div id="error-lottie"></div></div>
 
     <script>
+        // (All JavaScript code is unchanged)
         const elements = {
             lessonTitle: document.getElementById('lesson-title'),
             question: document.getElementById('question'),
@@ -333,7 +191,7 @@
             4: { name: "Division", operator: "÷" },
             5: { name: "Mix", operator: "ंड" }
         };
-
+        
         const animations = { success: null, error: null };
         const getInitialState = () => ({
             currentLesson: 1,
@@ -346,12 +204,12 @@
         let state = getInitialState();
         const STORAGE_KEY = 'kidsMathPracticeState';
 
-        function loadState() { /* Unchanged */ try { const savedStateJSON = localStorage.getItem(STORAGE_KEY); if (savedStateJSON) { const loadedState = JSON.parse(savedStateJSON); state = { ...getInitialState(), ...loadedState }; state.isChecking = false; } } catch (error) { console.error("Could not load progress:", error); state = getInitialState(); } }
-        function saveState() { /* Unchanged */ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.error("Could not save progress:", error); } }
+        function loadState() { try { const savedStateJSON = localStorage.getItem(STORAGE_KEY); if (savedStateJSON) { const loadedState = JSON.parse(savedStateJSON); state = { ...getInitialState(), ...loadedState }; state.isChecking = false; } } catch (error) { console.error("Could not load progress:", error); state = getInitialState(); } }
+        function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.error("Could not save progress:", error); } }
         const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-        function updateUI() { /* Unchanged */ elements.lessonTitle.textContent = `Lesson ${state.currentLesson}: ${LESSONS[state.currentLesson].name}`; elements.lessonButtons.forEach(btn => { btn.classList.toggle('active', parseInt(btn.dataset.lesson) === state.currentLesson); }); elements.totalCorrect.textContent = state.totalCorrect; }
-        function displayQuestion(q) { /* Unchanged */ const topStr = String(q.a); const bottomStr = String(q.b); const padding = ' '.repeat(Math.max(0, bottomStr.length - topStr.length)); elements.question.innerHTML = `<div>${padding}${q.a}</div><div class="bottom-number"><span class="operator">${q.op}</span> ${q.b}</div>`; }
-
+        function updateUI() { elements.lessonTitle.textContent = `Lesson ${state.currentLesson}: ${LESSONS[state.currentLesson].name}`; elements.lessonButtons.forEach(btn => { btn.classList.toggle('active', parseInt(btn.dataset.lesson) === state.currentLesson); }); elements.totalCorrect.textContent = state.totalCorrect; }
+        function displayQuestion(q) { const topStr = String(q.a); const bottomStr = String(q.b); const padding = ' '.repeat(Math.max(0, bottomStr.length - topStr.length)); elements.question.innerHTML = `<div>${padding}${q.a}</div><div class="bottom-number"><span class="operator">${q.op}</span> ${q.b}</div>`; }
+        
         function handleCheckAnswer() {
             if (state.isChecking) return;
             const userAnswer = parseInt(elements.answer.value);
@@ -359,7 +217,7 @@
 
             state.isChecking = true;
             elements.checkBtn.disabled = true;
-            elements.feedback.textContent = '';
+            elements.feedback.textContent = ''; 
 
             if (userAnswer === state.currentQuestion.value) {
                 state.totalCorrect++;
@@ -376,116 +234,33 @@
             updateUI();
             saveState();
         }
-
-        function prepareNextQuestion() { /* Unchanged */ elements.feedback.textContent = ''; elements.answer.value = ''; generateQuestion(); elements.answer.focus(); state.isChecking = false; elements.checkBtn.disabled = false; }
-
+        
+        function prepareNextQuestion() { elements.feedback.textContent = ''; elements.answer.value = ''; generateQuestion(); elements.answer.focus(); state.isChecking = false; elements.checkBtn.disabled = false; }
+        
         function generateQuestion() {
             let q;
             let lesson = state.currentLesson;
-
-            // For Mix mode, use a medium progress level to get varied but not-too-hard questions
-            const mixProgress = 25;
-
-            if (lesson === 5) {
-                const randomLesson = randInt(1, 3);
-                const operator = LESSONS[randomLesson].operator;
-                if (operator === "+") q = generateAddition(mixProgress);
-                if (operator === "-") q = generateSubtraction(mixProgress);
-                if (operator === "×") q = generateMultiplication(mixProgress);
-            } else {
-                const operator = LESSONS[lesson].operator;
-                const progress = state.lessonProgress[lesson];
-                if (operator === "+") q = generateAddition(progress);
-                if (operator === "-") q = generateSubtraction(progress);
-                if (operator === "×") q = generateMultiplication(progress);
-                if (operator === "÷") q = generateDivision(progress);
-            }
+            const mixProgress = 25; 
+            if (lesson === 5) { const randomLesson = randInt(1, 3); const operator = LESSONS[randomLesson].operator; if (operator === "+") q = generateAddition(mixProgress); if (operator === "-") q = generateSubtraction(mixProgress); if (operator === "×") q = generateMultiplication(mixProgress); } else { const operator = LESSONS[lesson].operator; const progress = state.lessonProgress[lesson]; if (operator === "+") q = generateAddition(progress); if (operator === "-") q = generateSubtraction(progress); if (operator === "×") q = generateMultiplication(progress); if (operator === "÷") q = generateDivision(progress); }
             state.currentQuestion = q;
             displayQuestion(q);
         }
 
-        // --- MODIFICATION: ADVANCED ADAPTIVE DIFFICULTY LOGIC ---
-
-        // Generates two numbers that do NOT require carrying when added.
-        function generateNoCarryPair(digits) {
-            let a = '', b = '';
-            for (let i = 0; i < digits; i++) {
-                const d1 = randInt(i === 0 ? 1 : 0, 8);
-                const d2 = randInt(i === 0 ? 1 : 0, 9 - d1);
-                a += d1;
-                b += d2;
-            }
-            return [parseInt(a), parseInt(b)];
-        }
-
-        // Generates two numbers for subtraction that do NOT require borrowing.
-        function generateNoBorrowPair(digits) {
-            let a = '', b = '';
-            for (let i = 0; i < digits; i++) {
-                const d1 = randInt(i === 0 ? 1 : 0, 9);
-                const d2 = randInt(i === 0 ? 1 : 0, d1);
-                a += d1;
-                b += d2;
-            }
-            return [parseInt(a), parseInt(b)];
-        }
-
-        function generateAddition(progress) {
-            let a, b;
-            if (progress < 5) { a = randInt(1, 9); b = randInt(1, 9); }
-            else if (progress < 10) { [a, b] = [randInt(10, 89), randInt(1, 9)]; while ((a % 10) + b >= 10) a = randInt(10, 89); }
-            else if (progress < 15) { a = randInt(11, 89); b = randInt(1, 9); }
-            else if (progress < 20) { [a, b] = generateNoCarryPair(2); }
-            else if (progress < 30) { a = randInt(10, 89); b = randInt(10, 89); }
-            else if (progress < 40) { a = randInt(100, 899); b = randInt(10, 89); }
-            else if (progress < 50) { a = randInt(100, 899); b = randInt(100, 899); }
-            else if (progress < 60) { a = randInt(1000, 8999); b = randInt(100, 899); }
-            else if (progress < 70) { a = randInt(1000, 8999); b = randInt(1000, 8999); }
-            else { a = randInt(10000, 89999); b = randInt(1000, 89999); }
-            return (a < b) ? { a: b, b: a, op: "+", value: a + b } : { a, b, op: "+", value: a + b };
-        }
-
-        function generateSubtraction(progress) {
-            let a, b;
-            if (progress < 5) { a = randInt(2, 9); b = randInt(1, a); }
-            else if (progress < 10) { [a, b] = [randInt(11, 99), randInt(1, 9)]; while ((a % 10) < b) a = randInt(11, 99); }
-            else if (progress < 15) { a = randInt(21, 99); b = randInt(2, 9); }
-            else if (progress < 20) { [a, b] = generateNoBorrowPair(2); }
-            else if (progress < 30) { a = randInt(21, 99); b = randInt(11, a - 1); }
-            else if (progress < 40) { a = randInt(100, 999); b = randInt(10, 99); }
-            else if (progress < 50) { a = randInt(200, 999); b = randInt(100, a - 10); }
-            else { a = randInt(1000, 9999); b = randInt(100, a - 100); }
-            return { a, b, op: "-", value: a - b };
-        }
-
-        function generateMultiplication(progress) {
-            let a, b = randInt(2, 9); // Always multiply by a single digit
-            if (progress < 10) { a = randInt(2, 9); }
-            else if (progress < 25) { a = randInt(10, 99); }
-            else if (progress < 40) { a = randInt(100, 999); }
-            else if (progress < 55) { a = randInt(1000, 9999); }
-            else { a = randInt(10000, 99999); }
-            return { a, b, op: "×", value: a * b };
-        }
-
-        function generateDivision(progress) {
-            let answer, b = randInt(2, 9); // Always divide by a single digit
-            if (progress < 10) { answer = randInt(1, 10); }
-            else if (progress < 25) { answer = randInt(11, 50); }
-            else { answer = randInt(51, 100); }
-            let a = answer * b;
-            return { a, b, op: "÷", value: answer };
-        }
-
-        function setupAnimations() { /* Unchanged */ animations.success = lottie.loadAnimation({ container: elements.successLottie, renderer: 'svg', loop: false, autoplay: false, path: 'Success.json' }); animations.error = lottie.loadAnimation({ container: elements.errorLottie, renderer: 'svg', loop: false, autoplay: false, path: 'error.json' }); animations.success.addEventListener('complete', () => { elements.successContainer.style.display = 'none'; prepareNextQuestion(); }); animations.error.addEventListener('complete', () => { elements.errorContainer.style.display = 'none'; setTimeout(prepareNextQuestion, 500); }); }
-
+        function generateNoCarryPair(digits) { let a = '', b = ''; for (let i = 0; i < digits; i++) { const d1 = randInt(i === 0 ? 1 : 0, 8); const d2 = randInt(i === 0 ? 1 : 0, 9 - d1); a += d1; b += d2; } return [parseInt(a), parseInt(b)]; }
+        function generateNoBorrowPair(digits) { let a = '', b = ''; for (let i = 0; i < digits; i++) { const d1 = randInt(i === 0 ? 1 : 0, 9); const d2 = randInt(i === 0 ? 1 : 0, d1); a += d1; b += d2; } return [parseInt(a), parseInt(b)]; }
+        function generateAddition(progress) { let a, b; if (progress < 5) { a = randInt(1, 9); b = randInt(1, 9); } else if (progress < 10) { [a, b] = [randInt(10, 89), randInt(1, 9)]; while ((a % 10) + b >= 10) a = randInt(10, 89); } else if (progress < 15) { a = randInt(11, 89); b = randInt(1, 9); } else if (progress < 20) { [a, b] = generateNoCarryPair(2); } else if (progress < 30) { a = randInt(10, 89); b = randInt(10, 89); } else if (progress < 40) { a = randInt(100, 899); b = randInt(10, 89); } else if (progress < 50) { a = randInt(100, 899); b = randInt(100, 899); } else if (progress < 60) { a = randInt(1000, 8999); b = randInt(100, 899); } else if (progress < 70) { a = randInt(1000, 8999); b = randInt(1000, 8999); } else { a = randInt(10000, 89999); b = randInt(1000, 89999); } return (a < b) ? { a: b, b: a, op: "+", value: a + b } : { a, b, op: "+", value: a + b }; }
+        function generateSubtraction(progress) { let a, b; if (progress < 5) { a = randInt(2, 9); b = randInt(1, a); } else if (progress < 10) { [a, b] = [randInt(11, 99), randInt(1, 9)]; while ((a % 10) < b) a = randInt(11, 99); } else if (progress < 15) { a = randInt(21, 99); b = randInt(2, 9); } else if (progress < 20) { [a, b] = generateNoBorrowPair(2); } else if (progress < 30) { a = randInt(21, 99); b = randInt(11, a - 1); } else if (progress < 40) { a = randInt(100, 999); b = randInt(10, 99); } else if (progress < 50) { a = randInt(200, 999); b = randInt(100, a - 10); } else { a = randInt(1000, 9999); b = randInt(100, a-100); } return { a, b, op: "-", value: a - b }; }
+        function generateMultiplication(progress) { let a, b = randInt(2, 9); if (progress < 10) { a = randInt(2, 9); } else if (progress < 25) { a = randInt(10, 99); } else if (progress < 40) { a = randInt(100, 999); } else if (progress < 55) { a = randInt(1000, 9999); } else { a = randInt(10000, 99999); } return { a, b, op: "×", value: a * b }; }
+        function generateDivision(progress) { let answer, b = randInt(2, 9); if (progress < 10) { answer = randInt(1, 10); } else if (progress < 25) { answer = randInt(11, 50); } else { answer = randInt(51, 100); } let a = answer * b; return { a, b, op: "÷", value: answer }; }
+        function setupAnimations() { animations.success=lottie.loadAnimation({container:elements.successLottie,renderer:'svg',loop:false,autoplay:false,path:'Success.json'}); animations.error=lottie.loadAnimation({container:elements.errorLottie,renderer:'svg',loop:false,autoplay:false,path:'error.json'}); animations.success.addEventListener('complete',()=>{elements.successContainer.style.display='none';prepareNextQuestion();}); animations.error.addEventListener('complete',()=>{elements.errorContainer.style.display='none';setTimeout(prepareNextQuestion, 500);}); }
+        
         elements.checkBtn.addEventListener('click', handleCheckAnswer);
         elements.answer.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCheckAnswer(); });
         elements.lessonButtons.forEach(btn => { btn.addEventListener('click', () => { const newLesson = parseInt(btn.dataset.lesson); if (newLesson === state.currentLesson) return; state.currentLesson = newLesson; updateUI(); prepareNextQuestion(); }); });
-
+        
         document.addEventListener('DOMContentLoaded', () => { loadState(); setupAnimations(); updateUI(); prepareNextQuestion(); });
     </script>
-
+    
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -495,7 +270,5 @@
         });
       }
     </script>
-    
 </body>
-
 </html>
