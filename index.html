@@ -5,6 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Math Practice for Kids</title>
+
+    <!-- ADDED: Link to the manifest file -->
+    <link rel="manifest" href="manifest.json" />
+
+    <!-- ADDED: Theme color for the browser's address bar on mobile -->
+    <meta name="theme-color" content="#121212"/>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <style>
         /* MODIFICATION: Reverted to black & white theme */
@@ -478,6 +485,17 @@
 
         document.addEventListener('DOMContentLoaded', () => { loadState(); setupAnimations(); updateUI(); prepareNextQuestion(); });
     </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').then((reg) => {
+            console.log('Service worker registered.', reg);
+          });
+        });
+      }
+    </script>
+    
 </body>
 
 </html>
